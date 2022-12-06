@@ -13,3 +13,37 @@
  *= require_tree .
  *= require_self
  */
+
+.required-star-mark {
+  color: red;
+}
+
+.comment-card {
+  background-color: #ebebeb;
+  border: solid 1px #afafaf;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+  color: #000;
+}
+
+.comment-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-card ul li {
+  color: rgb(99, 99, 99);
+  margin-bottom: 10px;
+}
+
+.comment-card ul li span {
+  font-weight: bold;
+  color: #000;
+  margin-right: 10px;
+}
+
+.comment-reason {
+  display: flex;
+  flex-direction: column;
+}

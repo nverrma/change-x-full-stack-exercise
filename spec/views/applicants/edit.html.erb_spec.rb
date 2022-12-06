@@ -30,6 +30,7 @@ RSpec.describe 'applicants/edit' do
 
   before do
     assign(:applicant, applicant)
+    assign(:comment, applicant.comments.build)
   end
 
   it 'renders the edit applicant form' do

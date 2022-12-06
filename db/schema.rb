@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_02_112308) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_06_051152) do
   create_table "applicants", force: :cascade do |t|
     t.string "name"
     t.text "overview"
@@ -21,6 +21,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_02_112308) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_applicants_on_name", unique: true
     t.index ["project_id"], name: "index_applicants_on_project_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.integer "applicant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status_changed_from", default: "", null: false
+    t.string "status_changed_to", default: "", null: false
+    t.index ["applicant_id"], name: "index_comments_on_applicant_id"
   end
 
   create_table "funds", force: :cascade do |t|
@@ -42,5 +52,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_02_112308) do
   end
 
   add_foreign_key "applicants", "projects"
+  add_foreign_key "comments", "applicants"
   add_foreign_key "projects", "funds"
 end

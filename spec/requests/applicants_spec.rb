@@ -91,24 +91,61 @@ RSpec.describe '/applicants' do
 
   describe 'PATCH /update' do
     context 'with valid parameters' do
-      let(:new_attributes) do
-        {
-          status: 'approved'
-        }
+      context 'when status changed' do
+        context 'when reason provided along with status change' do
+          let(:new_attributes) do
+            {
+              status: 'approved',
+              comment: {
+                body: 'comment body'
+              }
+            }
+          end
+
+          it 'updates the requested applicant and redirects to the applicant' do
+            applicant = Applicant.create! valid_attributes
+            patch applicant_url(applicant),
+                  params: { applicant: new_attributes }
+            applicant.reload
+            expect(applicant.status).to eq('approved')
+            expect(response).to redirect_to(applicant_url(applicant))
+          end
+        end
+
+        context 'when reason NOT provided along with status change' do
+          let(:new_attributes) do
+            {
+              status: 'approved',
+              comment: {
+                body: ''
+              }
+            }
+          end
+
+          it 'DOES NOT updates the requested applicant and renders a response with 422 status' do
+            applicant = Applicant.create! valid_attributes
+            patch applicant_url(applicant), params: { applicant: new_attributes }
+            applicant.reload
+            expect(applicant.status).to eq('initial_review')
+            expect(response).to have_http_status(:unprocessable_entity)
+          end
+        end
       end
 
-      it 'updates the requested applicant' do
-        applicant = Applicant.create! valid_attributes
-        patch applicant_url(applicant), params: { applicant: new_attributes }
-        applicant.reload
-        expect(applicant.status).to eq('approved')
-      end
+      context 'when attributes other then status changed' do
+        let(:new_attributes) do
+          {
+            overview: 'overview updated'
+          }
+        end
 
-      it 'redirects to the applicant' do
-        applicant = Applicant.create! valid_attributes
-        patch applicant_url(applicant), params: { applicant: new_attributes }
-        applicant.reload
-        expect(response).to redirect_to(applicant_url(applicant))
+        it 'updates the requested applicant' do
+          applicant = Applicant.create! valid_attributes
+          patch applicant_url(applicant), params: { applicant: new_attributes }
+          applicant.reload
+          expect(applicant.overview).to eq('overview updated')
+          expect(response).to redirect_to(applicant_url(applicant))
+        end
       end
     end
 

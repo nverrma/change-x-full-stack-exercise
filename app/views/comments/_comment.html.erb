@@ -1,0 +1,10 @@
+<div id="<%= dom_id(comment)%>">
+  <div class="comment-card">
+      <ul>
+        <li class="comment-reason"><span>Reason for status change:</span> <%= comment.body %></li>
+        <li><span>Status change From:</span>  <%= comment.status_changed_from.capitalize %></li>
+        <li><span>Status change To:</span>  <%= comment.status_changed_to.capitalize %></li>
+        <li><span>Create Date:</span>  <%= comment.created_at %></li>
+    </ul>
+  </div>
+</div>
