@@ -34,6 +34,16 @@ RSpec.describe 'payments/index.html.erb' do
     )
   end
 
+  let(:projects) do
+    Project.includes(:applicants).where('payment_date > ?', Date.current)
+  end
+
+  let(:dates) do
+    projects.each_with_object(Hash.new { |k, v| k[v] = [] }) do |project, output|
+      output[project.payment_date] << project.title
+    end
+  end
+
   before do
     Applicant.create!(
       name: 'Applicant 1',
@@ -60,6 +70,9 @@ RSpec.describe 'payments/index.html.erb' do
     )
 
     project2
+
+    assign(:projects, projects)
+    assign(:dates, dates)
   end
 
   it 'renders a list of payments' do
